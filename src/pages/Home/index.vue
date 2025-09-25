@@ -1,20 +1,28 @@
-<script lang="ts" setup>
-import CardMidia from "@/components/CardMidia.vue";
-import { onMounted, ref } from "vue";
+<script lang="ts">
+  import { defineComponent } from "vue";
+  import CardMidia from "@/components/CardMidia.vue";
 
-const API_KEY = import.meta.env.VITE_API_URL;
-const BASE_URL = import.meta.env.VITE_BASE_URL;
+  const API_KEY = import.meta.env.VITE_API_URL;
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-let films = ref<any>(null);
-
-onMounted(() => {
-  fetch(`${BASE_URL}/movie/popular?api_key=${API_KEY}&language=pt-BR&page=1`)
-    .then((res) => res.json())
-    .then((res) => {
-      films.value = res.results;
-      console.log(res.results);
-    });
-});
+  export default defineComponent({
+    components: {
+      CardMidia,
+    },
+    data() {
+      return {
+        films: [] as any[],
+      };
+    },
+    mounted() {
+      fetch(`${BASE_URL}/movie/popular?api_key=${API_KEY}&language=pt-BR&page=1`)
+        .then((res) => res.json())
+        .then((res) => {
+          this.films = res.results;
+          console.log(res.results);
+        });
+    },
+  });
 </script>
 
 <template>
@@ -31,4 +39,3 @@ onMounted(() => {
     </div>
   </div>
 </template>
-
