@@ -9,7 +9,7 @@
     },
     data() {
       return {
-        films: [] as any[],
+        films: [],
       };
     },
     async mounted() {
@@ -30,7 +30,7 @@
         <CardMidia
           v-for="film in films"
           :key="film.id"
-          :name="film.original_title"
+          :name="film.title"
           :urlPoster="'https://image.tmdb.org/t/p/w342' + film.poster_path"
         />
       </div>
