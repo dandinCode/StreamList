@@ -1,10 +1,11 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import CardMidia from "@/components/CardMidia.vue";
+import Pagination from "@/components/Pagination.vue";
+import DropdownFilters from "@/components/DropdownFilters.vue";
 import { getAllMovies } from "@/services/movies.ts";
 import { Movie } from "@/types/movies.ts";
 import { useMovieStore } from "@/stores/movies";
-import Pagination from "@/components/Pagination.vue";
 
 export default defineComponent({
   components: {
@@ -40,6 +41,7 @@ export default defineComponent({
 <template>
   <div>
     <h2>Movies</h2>
+    <DropdownFilters />
     <div class="card mb-3">
       <div class="card-body row">
         <CardMidia
