@@ -1,9 +1,7 @@
 <script lang="ts">
   import { defineComponent } from "vue";
   import CardMidia from "@/components/CardMidia.vue";
-
-  const API_KEY = import.meta.env.VITE_API_URL;
-  const BASE_URL = import.meta.env.VITE_BASE_URL;
+  import { getPopularMovies } from "@/services/movies.ts";
 
   export default defineComponent({
     components: {
@@ -14,13 +12,13 @@
         films: [] as any[],
       };
     },
-    mounted() {
-      fetch(`${BASE_URL}/movie/popular?api_key=${API_KEY}&language=pt-BR&page=1`)
-        .then((res) => res.json())
-        .then((res) => {
-          this.films = res.results;
-          console.log(res.results);
-        });
+    async mounted() {
+      try {
+        this.films = await getPopularMovies();
+      } catch (err) {
+        console.error("Erro ao carregar filmes:", err);
+        this.films = [];
+      }
     },
   });
 </script>
