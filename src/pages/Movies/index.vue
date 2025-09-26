@@ -4,6 +4,7 @@ import CardMidia from "@/components/CardMidia.vue";
 import { getAllMovies } from "@/services/movies.ts";
 import { Movie } from "@/types/movies.ts";
 import { useMovieStore } from "@/stores/movies";
+import Pagination from "@/components/Pagination.vue";
 
 export default defineComponent({
   components: {
@@ -48,45 +49,11 @@ export default defineComponent({
           :urlPoster="'https://image.tmdb.org/t/p/w342' + film.poster_path"
         />
       </div>
-      <div
-        class="d-flex justify-content-center align-items-center gap-2 mt-3 pb-9"
-      >
-        <button
-          v-if="currentPage - 2 > 0"
-          class="btn btn-outline-primary"
-          @click="changeCurrentPage(currentPage - 2)"
-        >
-          {{ currentPage - 2 }}
-        </button>
-
-        <button
-          v-if="currentPage - 1 > 0"
-          class="btn btn-outline-primary"
-          @click="changeCurrentPage(currentPage - 1)"
-        >
-          {{ currentPage - 1 }}
-        </button>
-
-        <button class="btn btn-primary fw-bold" disabled>
-          {{ currentPage }}
-        </button>
-
-        <button
-          v-if="currentPage + 1 <= movieStore.total_pages"
-          class="btn btn-outline-primary"
-          @click="changeCurrentPage(currentPage + 1)"
-        >
-          {{ currentPage + 1 }}
-        </button>
-
-        <button
-          v-if="currentPage + 2 <= movieStore.total_pages"
-          class="btn btn-outline-primary"
-          @click="changeCurrentPage(currentPage + 2)"
-        >
-          {{ currentPage + 2 }}
-        </button>
-      </div>
+      <Pagination
+        :currentPage="currentPage"
+        :totalPages="movieStore.total_pages"
+        @changePage="changeCurrentPage"
+      />
     </div>
   </div>
 </template>
