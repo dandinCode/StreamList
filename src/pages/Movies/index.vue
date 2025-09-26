@@ -28,9 +28,9 @@ export default defineComponent({
         this.films = [];
       }
     },
-    changeCurrentPage(page: number) {
+    async changeCurrentPage(page: number) {
       this.currentPage = page;
-      this.loadPage(page);
+      await this.loadPage(page);
     },
   },
 });
