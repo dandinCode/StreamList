@@ -8,6 +8,7 @@ const api: AxiosInstance = axios.create({
   params: {
     api_key: API_KEY,
     language: "pt-BR",
+    include_adult: false,
   },
   timeout: 10_000,
 });

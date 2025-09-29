@@ -1,9 +1,12 @@
 import type { AxiosResponse } from "axios";
 import api from "./api";
-import type { Movie, MoviesResponse } from "@/types/types";
+import type {
+  Genre,
+  Movie,
+  MoviesFilters,
+  MoviesResponse,
+} from "@/types/types";
 import { useMovieStore } from "@/stores/movies";
-
-const movieStore = useMovieStore();
 
 export async function getPopularMovies(page = 1): Promise<Movie[]> {
   const res: AxiosResponse<MoviesResponse> = await api.get("/movie/popular", {
@@ -12,10 +15,25 @@ export async function getPopularMovies(page = 1): Promise<Movie[]> {
   return res.data.results;
 }
 
-export async function getAllMovies(page = 1): Promise<Movie[]> {
+export async function getAllMovies(
+  page = 1,
+  filters?: MoviesFilters
+): Promise<Movie[]> {
   const res: AxiosResponse<MoviesResponse> = await api.get("/discover/movie", {
-    params: { page },
+    params: { page, ...filters },
   });
-  movieStore.changeTotalPages(res.data.total_pages)
+  const movieStore = useMovieStore();
+  movieStore.changeTotalPages(res.data.total_pages);
   return res.data.results;
+}
+
+export async function getAllGenres(): Promise<void> {
+  const res: AxiosResponse<{ genres: Genre[] }> = await api.get(
+    "/genre/movie/list",
+    {
+      params: { language: "pt-BR" },
+    }
+  );
+  const movieStore = useMovieStore();
+  movieStore.saveGenres(res.data.genres);
 }

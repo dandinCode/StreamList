@@ -2,6 +2,7 @@
   import { defineComponent } from "vue";
   import CardMidia from "@/components/CardMidia.vue";
   import { getPopularMovies } from "@/services/movies.ts";
+import type { Movie } from "@/types/types";
 
   export default defineComponent({
     components: {
@@ -9,7 +10,7 @@
     },
     data() {
       return {
-        films: [],
+        films: []as Movie[],
       };
     },
     async mounted() {
