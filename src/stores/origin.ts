@@ -4,6 +4,7 @@ import { defineStore } from "pinia";
 export const useOriginStore = defineStore("origin", {
   state: () => ({
     origins: [] as Origin[],
+    originSelected: "",
   }),
   actions: {
     saveOrigins(origins: Origin[]) {
@@ -19,6 +20,11 @@ export const useOriginStore = defineStore("origin", {
       if (origins) {
         this.origins = JSON.parse(origins);
       }
+    },
+    setOriginSelected(selectedId?: string | null) {
+      selectedId
+        ? (this.originSelected = selectedId)
+        : (this.originSelected = "");
     },
   },
 });

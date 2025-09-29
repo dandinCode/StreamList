@@ -3,10 +3,11 @@ import { defineComponent } from "vue";
 import CardMidia from "@/components/CardMidia.vue";
 import Pagination from "@/components/Pagination.vue";
 import DropdownFilters from "@/components/DropdownFilters.vue";
-import { getAllMovies, getAllGenres } from "@/services/movies.ts";
+import { getAllGenres } from "@/services/movies.ts";
 import { useMovieStore } from "@/stores/movies";
 import type { Movie } from "@/types/types";
 import { getAllOrigins } from "@/services/origin";
+import { useOriginStore } from "@/stores/origin";
 
 export default defineComponent({
   components: {
@@ -14,7 +15,6 @@ export default defineComponent({
   },
   data() {
     return {
-      films: [] as Movie[],
       currentPage: 1,
       movieStore: useMovieStore(),
     };
@@ -33,10 +33,12 @@ export default defineComponent({
   methods: {
     async loadPage(page: number) {
       try {
-        this.films = await getAllMovies(page);
+        useMovieStore().setFilms(page, {
+          with_genres: useMovieStore().genresSelected,
+          with_origin_country: useOriginStore().originSelected,
+        });
       } catch (err) {
         console.error("Erro ao carregar filmes:", err);
-        this.films = [];
       }
     },
     async changeCurrentPage(page: number) {
@@ -54,11 +56,13 @@ export default defineComponent({
     <div class="card mb-3">
       <div class="card-body row">
         <CardMidia
-          v-for="film in films"
+          v-if="movieStore.films.length > 1"
+          v-for="film in movieStore.films"
           :key="film.id"
           :name="film.title"
           :urlPoster="'https://image.tmdb.org/t/p/w342' + film.poster_path"
         />
+        <h3 v-else>Nenhum filme encontrado!</h3>
       </div>
       <Pagination
         :currentPage="currentPage"

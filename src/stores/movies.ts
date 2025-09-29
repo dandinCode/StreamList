@@ -1,9 +1,12 @@
-import type { Genre } from "@/types/types";
+import { getAllMovies } from "@/services/movies";
+import type { Genre, Movie, MoviesFilters } from "@/types/types";
 import { defineStore } from "pinia";
 
 export const useMovieStore = defineStore("movie", {
   state: () => ({
+    films: [] as Movie[],
     genres: [] as Genre[],
+    genresSelected: "",
     total_pages: 1,
   }),
   actions: {
@@ -11,9 +14,7 @@ export const useMovieStore = defineStore("movie", {
       this.total_pages = total_pages;
     },
     saveGenres(genres: Genre[]) {
-      const sorted = [...genres].sort((a, b) =>
-        a.name.localeCompare(b.name)
-      );
+      const sorted = [...genres].sort((a, b) => a.name.localeCompare(b.name));
 
       this.genres = sorted;
       sessionStorage.setItem("genres", JSON.stringify(sorted));
@@ -23,6 +24,12 @@ export const useMovieStore = defineStore("movie", {
       if (genres) {
         this.genres = JSON.parse(genres);
       }
+    },
+    setGenresSelected(selectedIds: string[]) {
+      this.genresSelected = selectedIds.join(",");
+    },
+    async setFilms(page: number, filters?: MoviesFilters) {
+      this.films = await getAllMovies(page, filters);
     },
   },
 });
