@@ -10,6 +10,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     AppFooter: typeof import('./components/AppFooter.vue')['default']
     CardMidia: typeof import('./components/CardMidia.vue')['default']
+    DropdownFilters: typeof import('./components/DropdownFilters.vue')['default']
     Pagination: typeof import('./components/Pagination.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
