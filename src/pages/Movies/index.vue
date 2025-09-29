@@ -3,9 +3,10 @@ import { defineComponent } from "vue";
 import CardMidia from "@/components/CardMidia.vue";
 import Pagination from "@/components/Pagination.vue";
 import DropdownFilters from "@/components/DropdownFilters.vue";
-import { getAllMovies } from "@/services/movies.ts";
-import { Movie } from "@/types/movies.ts";
+import { getAllMovies, getAllGenres } from "@/services/movies.ts";
 import { useMovieStore } from "@/stores/movies";
+import type { Movie } from "@/types/types";
+import { getAllOrigins } from "@/services/origin";
 
 export default defineComponent({
   components: {
@@ -13,12 +14,20 @@ export default defineComponent({
   },
   data() {
     return {
-      films: [],
+      films: [] as Movie[],
       currentPage: 1,
       movieStore: useMovieStore(),
     };
   },
   async mounted() {
+    const genres = sessionStorage.getItem("genres");
+    if (!genres) {
+      await getAllGenres();
+    }
+    const origins = sessionStorage.getItem("origins");
+    if (!origins) {
+      await getAllOrigins();
+    }
     await this.loadPage(this.currentPage);
   },
   methods: {

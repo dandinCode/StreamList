@@ -25,10 +25,10 @@ export interface MoviesFilters {
   with_original_language?: string;
 }
 
-export interface Language {
-  iso_639_1: string;
+export interface Origin {
+  iso_3166_1: string;
+  native_name: string;
   english_name: string;
-  name: string;
 }
 
 export interface Genre {
