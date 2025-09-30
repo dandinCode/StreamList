@@ -6,6 +6,9 @@ export interface Movie {
   poster_path: string | null;
   release_date?: string;
   adult: boolean;
+  vote_count?: string;
+  vote_average?: string;
+  genres?: Genre[];
 }
 
 export interface MoviesResponse {

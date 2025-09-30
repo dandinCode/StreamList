@@ -1,15 +1,31 @@
-<script setup lang="ts">
-const {name, urlPoster} = defineProps<{
-  name: string;
-  urlPoster: string;
-}>();
+<script lang="ts">
+import { defineComponent } from "vue";
+
+export default defineComponent({
+  props: {
+    id: {
+      type: Number,
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    urlPoster: {
+      type: String,
+      required: true,
+    },
+  },
+});
 </script>
 
 <template>
   <div class="col-4">
     <div class="card p2 mb-3 cardList">
-      <p class="text-center">{{ name }}</p>
-      <img :src="urlPoster" class="card-img-top" alt=""  />
+      <router-link :to="`/Details/${id}`">
+        <p class="text-center">{{ name }}</p>
+        <img :src="urlPoster" class="card-img-top" alt="" />
+      </router-link>
     </div>
   </div>
 </template>
