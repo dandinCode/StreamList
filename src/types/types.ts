@@ -19,10 +19,7 @@ export interface MoviesFilters {
   title?: string;
   original_title?: string;
   with_genres?: string;
-  release_date?: string;
   with_origin_country?: string;
-  adult?: boolean;
-  with_original_language?: string;
 }
 
 export interface Origin {
@@ -34,4 +31,9 @@ export interface Origin {
 export interface Genre {
   id: number;
   name: string;
+}
+
+export interface CachedPage {
+  movies: Movie[];
+  totalPages: number;
 }
