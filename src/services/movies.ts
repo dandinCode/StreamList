@@ -28,7 +28,7 @@ export async function getAllMovies(
     return cached.movies;
   }
 
-  const res = await api.get("/discover/movie", {
+  const res: AxiosResponse<MoviesResponse> = await api.get("/discover/movie", {
     params: { page, ...filters },
   });
   
@@ -46,4 +46,14 @@ export async function getAllGenres(): Promise<void> {
   );
   const movieStore = useMovieStore();
   movieStore.saveGenres(res.data.genres);
+}
+
+export async function getMovieDetails(id: number): Promise<Movie> {
+  const res: AxiosResponse<Movie> = await api.get(
+    `/movie/${id}`,
+    {
+      params: { language: "pt-BR" },
+    }
+  );
+  return res.data;
 }
