@@ -5,9 +5,17 @@ import Pagination from "@/components/Pagination.vue";
 import DropdownFilters from "@/components/DropdownFilters.vue";
 import { getAllGenres } from "@/services/movies.ts";
 import { useMovieStore } from "@/stores/movies";
+import { useOriginStore } from "@/stores/origin";
 import type { Movie } from "@/types/types";
 import { getAllOrigins } from "@/services/origin";
-import { useOriginStore } from "@/stores/origin";
+
+function debounce<T extends (...args: any[]) => void>(fn: T, delay = 500) {
+  let timer: ReturnType<typeof setTimeout>;
+  return (...args: Parameters<T>) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), delay);
+  };
+}
 
 export default defineComponent({
   components: {
@@ -17,6 +25,7 @@ export default defineComponent({
     return {
       currentPage: 1,
       movieStore: useMovieStore(),
+      searchMovieField: "",
     };
   },
   async mounted() {
@@ -33,7 +42,7 @@ export default defineComponent({
   methods: {
     async loadPage(page: number) {
       try {
-        useMovieStore().setFilms(page, {
+        await useMovieStore().setFilms(page, {
           with_genres: useMovieStore().genresSelected,
           with_origin_country: useOriginStore().originSelected,
         });
@@ -43,8 +52,27 @@ export default defineComponent({
     },
     async changeCurrentPage(page: number) {
       this.currentPage = page;
-      await this.loadPage(page);
+      if (this.searchMovieField.length >= 3) {
+        await this.movieStore.searchMovies(page, this.searchMovieField);
+      } else {
+        await this.loadPage(page);
+      }
     },
+  },
+  created() {
+    const debouncedSearch = debounce(async (query: string) => {
+      if (query.length >= 3) {
+        await this.movieStore.searchMovies(1, query);
+      } else {
+        await this.loadPage(1);
+      }
+    }, 400);
+    watch(
+      () => this.searchMovieField,
+      (newValue) => {
+        debouncedSearch(newValue);
+      }
+    );
   },
 });
 </script>
@@ -52,6 +80,20 @@ export default defineComponent({
 <template>
   <div>
     <h2>Movies</h2>
+    <div class="mb-3 p-2">
+      <label hidden for="searchMovieField" class="form-label">
+        Pesquisar...
+      </label>
+
+      <input
+        v-model="searchMovieField"
+        type="text"
+        class="form-control"
+        id="searchMovieField"
+        placeholder="Pesquisar..."
+      />
+    </div>
+
     <DropdownFilters />
     <div class="card mb-3">
       <div class="card-body row">

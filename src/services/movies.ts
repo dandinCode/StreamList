@@ -9,7 +9,7 @@ import type {
 import { useMovieStore } from "@/stores/movies";
 import { getFromCache, saveToCache } from "@/utils/movieCache";
 
-export async function getPopularMovies(page = 1): Promise<Movie[]> {
+export async function getPopularMovies(page: number  = 1): Promise<Movie[]> {
   const res: AxiosResponse<MoviesResponse> = await api.get("/movie/popular", {
     params: { page },
   });
@@ -17,7 +17,7 @@ export async function getPopularMovies(page = 1): Promise<Movie[]> {
 }
 
 export async function getAllMovies(
-  page = 1,
+  page: number = 1,
   filters: MoviesFilters = {}
 ): Promise<Movie[]> {
   const movieStore = useMovieStore();
@@ -56,4 +56,13 @@ export async function getMovieDetails(id: number): Promise<Movie> {
     }
   );
   return res.data;
+}
+
+export async function searchMovies(page: number = 1, query: string): Promise<Movie[]> {
+  const movieStore = useMovieStore();
+  const res: AxiosResponse<MoviesResponse> = await api.get("/search/movie", {
+    params: { query, page, language: "pt-BR" },
+  });
+  movieStore.changeTotalPages(res.data.total_pages);
+  return res.data.results;
 }

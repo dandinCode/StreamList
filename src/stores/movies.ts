@@ -1,6 +1,9 @@
-import { getAllMovies } from "@/services/movies";
+import { getAllMovies, searchMovies } from "@/services/movies";
 import type { Genre, Movie, MoviesFilters } from "@/types/types";
 import { defineStore } from "pinia";
+import { useOriginStore } from "@/stores/origin";
+
+const originStore = useOriginStore();
 
 export const useMovieStore = defineStore("movie", {
   state: () => ({
@@ -30,6 +33,9 @@ export const useMovieStore = defineStore("movie", {
     },
     async setFilms(page: number, filters?: MoviesFilters) {
       this.films = await getAllMovies(page, filters);
+    },
+    async searchMovies(page: number, query: string) {
+      this.films = await searchMovies(page, query);
     },
   },
 });
