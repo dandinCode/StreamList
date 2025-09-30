@@ -1,9 +1,22 @@
-<script setup lang="ts">
-const { name, urlPoster } = defineProps<{
-  id: number;
-  name: string;
-  urlPoster: string;
-}>();
+<script lang="ts">
+import { defineComponent } from "vue";
+
+export default defineComponent({
+  props: {
+    id: {
+      type: Number,
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    urlPoster: {
+      type: String,
+      required: true,
+    },
+  },
+});
 </script>
 
 <template>
