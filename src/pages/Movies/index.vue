@@ -61,6 +61,7 @@ export default defineComponent({
           :key="film.id"
           :name="film.title"
           :urlPoster="'https://image.tmdb.org/t/p/w342' + film.poster_path"
+          :id="film.id"
         />
         <h3 v-else>Nenhum filme encontrado!</h3>
       </div>
