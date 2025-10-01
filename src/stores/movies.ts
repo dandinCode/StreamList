@@ -1,9 +1,6 @@
 import { getAllMovies, searchMovies } from "@/services/movies";
 import type { Genre, Movie, MoviesFilters } from "@/types/types";
 import { defineStore } from "pinia";
-import { useOriginStore } from "@/stores/origin";
-
-const originStore = useOriginStore();
 
 export const useMovieStore = defineStore("movie", {
   state: () => ({
@@ -37,5 +34,25 @@ export const useMovieStore = defineStore("movie", {
     async searchMovies(page: number, query: string) {
       this.films = await searchMovies(page, query);
     },
+    sortMovies(sortBy: string, sortDirection: string){
+      const movies = this.films;
+      return movies.sort((a, b) => {
+        let comparison = 0;
+
+        if (sortBy === "title") {
+          comparison = a.title.localeCompare(b.title, "pt-BR", {
+            sensitivity: "base",
+          });
+        } else if (sortBy === "release_date") {
+          const dateA = new Date(a.release_date ?? 0).getTime();
+          const dateB = new Date(b.release_date ?? 0).getTime();
+          comparison = dateA - dateB;
+         } else if (sortBy === "vote_average") {
+          comparison = Number(a.vote_average) - Number(b.vote_average);
+        }
+
+        return sortDirection === "asc" ? comparison : -comparison;
+      });
+    }
   },
 });
