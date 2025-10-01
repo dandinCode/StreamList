@@ -39,6 +39,10 @@ export default defineComponent({
     rgba(70, 252, 244, 0.2) 100%
   );
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
 }
 .cardList:hover {
   background: rgb(72, 63, 251);
@@ -50,5 +54,12 @@ export default defineComponent({
 }
 .cardList img:hover {
   padding: 0.1rem;
+}
+.cardList img {
+  height: 500px;
+  object-fit: cover;
+}
+.cardList p {
+  min-height: 3rem; 
 }
 </style>
