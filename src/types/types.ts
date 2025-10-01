@@ -8,7 +8,6 @@ export interface Movie {
   adult: boolean;
   vote_count?: string;
   vote_average?: string;
-  genres?: Genre[];
 }
 
 export interface MoviesResponse {

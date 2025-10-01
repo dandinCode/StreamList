@@ -17,10 +17,12 @@ export default defineComponent({
     useMovieStore().loadGenres();
     useOriginStore().loadOrigins();
   },
+  emits: ["cleanSearchField"],
   methods: {
     async applyFilters() {
       useMovieStore().setGenresSelected(this.selectedGenres);
       useOriginStore().setOriginSelected(this.selectedOrigin);
+      this.$emit("cleanSearchField");
       await useMovieStore().setFilms(1, {
         with_genres: useMovieStore().genresSelected,
         with_origin_country: useOriginStore().originSelected,
