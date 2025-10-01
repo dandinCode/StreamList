@@ -3,6 +3,7 @@ import { defineComponent } from "vue";
 import CardMidia from "@/components/CardMidia.vue";
 import Pagination from "@/components/Pagination.vue";
 import DropdownFilters from "@/components/DropdownFilters.vue";
+import SortingButtons from "@/components/SortingButtons.vue";
 import { getAllGenres } from "@/services/movies.ts";
 import { useMovieStore } from "@/stores/movies";
 import { useOriginStore } from "@/stores/origin";
@@ -20,6 +21,9 @@ function debounce<T extends (...args: any[]) => void>(fn: T, delay: number) {
 export default defineComponent({
   components: {
     CardMidia,
+    Pagination,
+    DropdownFilters,
+    SortingButtons,
   },
   data() {
     return {
@@ -81,9 +85,9 @@ export default defineComponent({
 </script>
 
 <template>
-  <div>
+  <div class="p-2">
     <h2>Movies</h2>
-    <div class="mb-3 p-2">
+    <div class="mb-3">
       <label hidden for="searchMovieField" class="form-label">
         Pesquisar...
       </label>
@@ -98,6 +102,7 @@ export default defineComponent({
     </div>
 
     <DropdownFilters @cleanSearchField="cleanSearchField" />
+    <SortingButtons />
     <div class="card mb-3">
       <div class="card-body row">
         <CardMidia

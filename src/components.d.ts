@@ -14,5 +14,6 @@ declare module 'vue' {
     Pagination: typeof import('./components/Pagination.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SortingButtons: typeof import('./components/SortingButtons.vue')['default']
   }
 }
