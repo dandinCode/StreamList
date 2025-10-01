@@ -25,8 +25,9 @@ export default defineComponent({
 </script>
 
 <template>
-  <div>
-    <div class="card">
+  <div class="p-2">
+    <h2>Home</h2>
+    <div class="card mb-3">
       <div class="card-body row">
         <CardMidia
           v-for="film in films"
