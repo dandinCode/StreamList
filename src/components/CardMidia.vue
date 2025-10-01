@@ -20,7 +20,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="col-4">
+  <div class="col-12 col-sm-6 col-md-4 col-lg-4">
     <div class="card p2 mb-3 cardList">
       <router-link :to="`/Details/${id}`">
         <p class="text-center">{{ name }}</p>
