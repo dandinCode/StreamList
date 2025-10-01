@@ -9,7 +9,7 @@ import { useOriginStore } from "@/stores/origin";
 import type { Movie } from "@/types/types";
 import { getAllOrigins } from "@/services/origin";
 
-function debounce<T extends (...args: any[]) => void>(fn: T, delay = 500) {
+function debounce<T extends (...args: any[]) => void>(fn: T, delay: number) {
   let timer: ReturnType<typeof setTimeout>;
   return (...args: Parameters<T>) => {
     clearTimeout(timer);
@@ -58,6 +58,9 @@ export default defineComponent({
         await this.loadPage(page);
       }
     },
+    cleanSearchField() {
+      this.searchMovieField = "";
+    },
   },
   created() {
     const debouncedSearch = debounce(async (query: string) => {
@@ -94,7 +97,7 @@ export default defineComponent({
       />
     </div>
 
-    <DropdownFilters />
+    <DropdownFilters @cleanSearchField="cleanSearchField" />
     <div class="card mb-3">
       <div class="card-body row">
         <CardMidia
