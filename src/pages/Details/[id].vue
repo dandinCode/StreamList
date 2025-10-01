@@ -2,15 +2,19 @@
 import { defineComponent, ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { getMovieDetails } from "@/services/movies";
+import Favorite from "@/components/Favorite.vue";
 import type { Movie } from "@/types/types";
 
 export default defineComponent({
-  setup() {
-    const route = useRoute();
-    const movieId = Number((route.params as { id: string }).id);
-    const movie = ref<Movie>();
-
-    function formatDate(dateStr: string): string {
+  data() {
+    return {
+      movieId: Number((useRoute().params as { id: string }).id),
+      movie: ref<Movie>(),
+      errorGetDetails: false,
+    };
+  },
+  methods: {
+    formatDate(dateStr: string): string {
       if (!dateStr) return "-";
       const date = new Date(dateStr);
       return date.toLocaleDateString("pt-BR", {
@@ -18,13 +22,16 @@ export default defineComponent({
         month: "long",
         year: "numeric",
       });
+    },
+  },
+
+  async mounted() {
+    try {
+      this.movie = await getMovieDetails(this.movieId);
+    } catch (error) {
+      console.error(error);
+      this.errorGetDetails = true;
     }
-
-    onMounted(async () => {
-      movie.value = await getMovieDetails(movieId);
-    });
-
-    return { movie, formatDate };
   },
 });
 </script>
@@ -46,7 +53,7 @@ export default defineComponent({
           Lançamento: {{ formatDate(movie.release_date) }}
         </p>
 
-        <p  v-if="movie.vote_average">
+        <p v-if="movie.vote_average">
           Avaliação: ⭐ {{ Number(movie.vote_average).toFixed(1) }} ({{
             movie.vote_count
           }}
@@ -64,7 +71,12 @@ export default defineComponent({
         </div>
 
         <p>{{ movie.overview || "Resumo não disponível." }}</p>
+
+        <Favorite :movie="movie" />
       </div>
+    </div>
+    <div v-if="errorGetDetails">
+      <h2>Não foi possível encontrar os detalhes do filme!</h2>
     </div>
 
     <div v-else class="text-center mt-5">
