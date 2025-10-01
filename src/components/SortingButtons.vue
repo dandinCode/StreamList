@@ -25,7 +25,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="d-flex gap-2 mb-3 p-2">
+  <div class="d-flex gap-2 mb-3 p-2 flex-wrap">
     <button class="btn btn-outline-primary" @click="toggleSort('title')">
       Ordem alfabética
       <span v-if="sortBy === 'title'">
