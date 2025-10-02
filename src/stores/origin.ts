@@ -1,3 +1,4 @@
+import { getAllOrigins } from "@/services/origin";
 import type { Origin } from "@/types/types";
 import { defineStore } from "pinia";
 
@@ -7,7 +8,8 @@ export const useOriginStore = defineStore("origin", {
     originSelected: "",
   }),
   actions: {
-    saveOrigins(origins: Origin[]) {
+    async saveOrigins() {
+      const origins: Origin[] = await getAllOrigins();
       const sorted = [...origins].sort((a, b) =>
         a.native_name.localeCompare(b.native_name)
       );

@@ -21,6 +21,20 @@ export default defineComponent({
       useMovieStore().sortMovies(this.sortBy, this.sortDirection);
     },
   },
+  computed: {
+    sortLabel(): string {
+      switch (this.sortBy) {
+        case "title":
+          return this.sortDirection === "asc" ? "A-Z" : "Z-A";
+        case "release_date":
+          return this.sortDirection === "asc" ? "Mais antigo" : "Mais recente";
+        case "vote_average":
+          return this.sortDirection === "asc" ? "Menor nota" : "Maior nota";
+        default:
+          return "";
+      }
+    },
+  },
 });
 </script>
 
@@ -29,45 +43,37 @@ export default defineComponent({
     <button
       class="btn d-flex align-items-center"
       :class="[
-        $vuetify.theme.current.dark
-          ? 'btn-outline-warning'
-          : 'btn-warning',
+        $vuetify.theme.current.dark ? 'btn-outline-warning' : 'btn-warning',
       ]"
       @click="toggleSort('title')"
     >
       Ordem alfabética
-      <span v-if="sortBy === 'title'" class="ms-1">
-        ({{ sortDirection === "asc" ? "A-Z" : "Z-A" }})
-      </span>
+      <span v-if="sortBy === 'title'" class="ms-1"> ({{ sortLabel }}) </span>
     </button>
 
     <button
       class="btn d-flex align-items-center"
       :class="[
-        $vuetify.theme.current.dark
-          ? 'btn-outline-warning'
-          : 'btn-warning',
+        $vuetify.theme.current.dark ? 'btn-outline-warning' : 'btn-warning',
       ]"
       @click="toggleSort('release_date')"
     >
       Ano de lançamento
       <span v-if="sortBy === 'release_date'" class="ms-1">
-        ({{ sortDirection === "asc" ? "Mais antigo" : "Mais recente" }})
+        ({{ sortLabel }})
       </span>
     </button>
 
     <button
       class="btn d-flex align-items-center"
       :class="[
-        $vuetify.theme.current.dark
-          ? 'btn-outline-warning'
-          : 'btn-warning',
+        $vuetify.theme.current.dark ? 'btn-outline-warning' : 'btn-warning',
       ]"
       @click="toggleSort('vote_average')"
     >
       Avaliação do público
       <span v-if="sortBy === 'vote_average'" class="ms-1">
-        ({{ sortDirection === "asc" ? "Menor nota" : "Maior nota" }})
+        ({{ sortLabel }})
       </span>
     </button>
   </div>
