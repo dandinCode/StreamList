@@ -25,9 +25,9 @@ export const useFavoriteStore = defineStore("favorite", {
       localStorage.setItem("favorites", JSON.stringify(this.favorites));
     },
     toggleFavorite(movie: Movie) {
-      if(!this.isFavorite(movie.id)){
+      if (!this.isFavorite(movie.id)) {
         this.addFavorite(movie);
-        return
+        return;
       }
       this.removeFavorite(movie.id);
     },
@@ -35,5 +35,4 @@ export const useFavoriteStore = defineStore("favorite", {
       return this.favorites.some((fav) => fav.id === movieId);
     },
   },
-}
-);
+});

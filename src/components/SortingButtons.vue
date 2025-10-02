@@ -29,9 +29,7 @@ export default defineComponent({
     <button
       class="btn d-flex align-items-center"
       :class="[
-        $vuetify.theme.current.dark
-          ? 'btn-outline-warning'
-          : 'btn-warning',
+        $vuetify.theme.current.dark ? 'btn-outline-warning' : 'btn-warning',
       ]"
       @click="toggleSort('title')"
     >
@@ -44,9 +42,7 @@ export default defineComponent({
     <button
       class="btn d-flex align-items-center"
       :class="[
-        $vuetify.theme.current.dark
-          ? 'btn-outline-warning'
-          : 'btn-warning',
+        $vuetify.theme.current.dark ? 'btn-outline-warning' : 'btn-warning',
       ]"
       @click="toggleSort('release_date')"
     >
@@ -59,9 +55,7 @@ export default defineComponent({
     <button
       class="btn d-flex align-items-center"
       :class="[
-        $vuetify.theme.current.dark
-          ? 'btn-outline-warning'
-          : 'btn-warning',
+        $vuetify.theme.current.dark ? 'btn-outline-warning' : 'btn-warning',
       ]"
       @click="toggleSort('vote_average')"
     >

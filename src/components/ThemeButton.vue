@@ -3,7 +3,7 @@ import { useTheme } from "vuetify";
 
 const theme = useTheme();
 const savedTheme = localStorage.getItem("app-theme") || "light";
-theme.change(savedTheme)
+theme.change(savedTheme);
 
 function toggleTheme() {
   let newTheme;

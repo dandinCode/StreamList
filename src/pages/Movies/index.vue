@@ -26,7 +26,6 @@ export default defineComponent({
   },
   async mounted() {
     this.debouncedSearch = this.getDebouncedSearch();
-
     useMovieStore().saveGenres();
     useOriginStore().saveOrigins();
     await this.loadPage(this.currentPage);
