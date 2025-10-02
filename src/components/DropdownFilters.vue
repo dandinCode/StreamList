@@ -48,11 +48,7 @@ export default defineComponent({
               <v-icon icon="mdi-menu-right" size="x-small"></v-icon>
             </template>
 
-            <v-menu
-              activator="parent"
-              submenu
-              :close-on-content-click="false"
-            >
+            <v-menu activator="parent" submenu :close-on-content-click="false">
               <v-list>
                 <template v-if="category === 'Gênero'">
                   <v-list-item
@@ -72,7 +68,6 @@ export default defineComponent({
                   <v-list-item
                     v-for="origin in originStore.origins"
                     :key="origin.iso_3166_1"
-                    link
                     @click="
                       selectedOrigin === origin.iso_3166_1
                         ? (selectedOrigin = null)
@@ -83,14 +78,13 @@ export default defineComponent({
                       {{ origin.native_name }} -
                       {{ origin.iso_3166_1.toUpperCase() }}
                     </v-list-item-title>
-
-                    <template v-slot:append>
+                    <v-list-item-action>
                       <v-icon
                         v-if="selectedOrigin === origin.iso_3166_1"
                         icon="mdi-check"
                         color="primary"
                       />
-                    </template>
+                    </v-list-item-action>
                   </v-list-item>
                 </template>
               </v-list>
