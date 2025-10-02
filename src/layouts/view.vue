@@ -6,9 +6,9 @@
 
 
   const items = [
-    { text: 'Home', icon: 'mdi-home', to: "/home"},
-    { text: 'Movies', icon: 'mdi-movie', to: "/movies" },
-    { text: 'Favorites', icon: 'mdi-star', to: "/favorites" },
+    { text: 'Início', icon: 'mdi-home', to: "/home"},
+    { text: 'Filmes', icon: 'mdi-movie', to: "/movies" },
+    { text: 'Favoritos', icon: 'mdi-heart', to: "/favorites" },
   ];
 </script>
 
@@ -43,8 +43,8 @@
 
     <v-app-bar>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-
-      <v-app-bar-title>Stream List</v-app-bar-title>
+      <v-app-bar-title class="font-fancy">Stream List</v-app-bar-title>
+      <theme-button />
     </v-app-bar>
 
     <v-main>
@@ -54,8 +54,12 @@
 </template>
 
 <style scoped>
-a{
-    text-decoration: none;
-    color:#505050
+a {
+  text-decoration: none;
+  color: #505050;
+}
+
+.v-theme--dark a {
+  color: #ffffff;
 }
 </style>
