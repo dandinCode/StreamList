@@ -51,7 +51,7 @@ export default defineComponent({
 <style scoped>
 .movie-card img {
   height: 500px;
-  object-fit: cover;
+  object-fit: fill;
   border-radius: 0.3rem 0.3rem 0 0;
   transition: transform 0.3s ease-in-out;
 }

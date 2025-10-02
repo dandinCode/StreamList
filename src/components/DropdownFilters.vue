@@ -50,7 +50,6 @@ export default defineComponent({
 
             <v-menu
               activator="parent"
-              open-on-hover
               submenu
               :close-on-content-click="false"
             >
