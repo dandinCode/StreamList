@@ -4,11 +4,9 @@ import CardMidia from "@/components/CardMidia.vue";
 import Pagination from "@/components/Pagination.vue";
 import DropdownFilters from "@/components/DropdownFilters.vue";
 import SortingButtons from "@/components/SortingButtons.vue";
-import { getAllGenres } from "@/services/movies.ts";
 import { useMovieStore } from "@/stores/movies";
 import { useOriginStore } from "@/stores/origin";
 import type { Movie } from "@/types/types";
-import { getAllOrigins } from "@/services/origin";
 import { debounce } from "@/utils/debounce.ts";
 
 export default defineComponent({
@@ -29,14 +27,8 @@ export default defineComponent({
   async mounted() {
     this.debouncedSearch = this.getDebouncedSearch();
 
-    const genres = sessionStorage.getItem("genres");
-    if (!genres) {
-      await getAllGenres();
-    }
-    const origins = sessionStorage.getItem("origins");
-    if (!origins) {
-      await getAllOrigins();
-    }
+    useMovieStore().saveGenres();
+    useOriginStore().saveOrigins();
     await this.loadPage(this.currentPage);
   },
   methods: {
@@ -67,7 +59,7 @@ export default defineComponent({
         if (query.length >= 3) {
           await this.movieStore.searchMovies(1, query);
           this.currentPage = 1;
-          return
+          return;
         }
         await this.loadPage(1);
       }, 400);

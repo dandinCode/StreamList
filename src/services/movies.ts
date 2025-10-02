@@ -50,7 +50,7 @@ export async function getAllMovies(
   }
 }
 
-export async function getAllGenres(): Promise<void> {
+export async function getAllGenres(): Promise<Genre[]> {
   try {
     const res: AxiosResponse<{ genres: Genre[] }> = await api.get(
       "/genre/movie/list",
@@ -58,10 +58,10 @@ export async function getAllGenres(): Promise<void> {
         params: { language: "pt-BR" },
       }
     );
-    const movieStore = useMovieStore();
-    movieStore.saveGenres(res.data.genres);
+    return res.data.genres;
   } catch (error) {
     console.error("Falha ao buscar gêneros: ", error);
+    return [];
   }
 }
 
