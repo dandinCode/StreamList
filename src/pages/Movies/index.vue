@@ -58,9 +58,9 @@ export default defineComponent({
       this.currentPage = page;
       if (this.searchMovieField.length >= 3) {
         await this.movieStore.searchMovies(page, this.searchMovieField);
-      } else {
-        await this.loadPage(page);
+        return
       }
+        await this.loadPage(page);
     },
     cleanSearchField() {
       this.searchMovieField = "";
