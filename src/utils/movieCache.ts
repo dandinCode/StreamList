@@ -77,3 +77,15 @@ export function saveToCache(
 
   saveCache(data);
 }
+
+export function getMovieById(id: number): Movie | null {
+  const cacheData = loadCache();
+
+  for (const pageKey of Object.keys(cacheData.cache)) {
+    const page = cacheData.cache[pageKey];
+    const found = page?.movies.find((movie) => movie.id === id);
+    if (found) return found;
+  }
+
+  return null;
+}

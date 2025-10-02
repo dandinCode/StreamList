@@ -7,7 +7,7 @@ import type {
   MoviesResponse,
 } from "@/types/types";
 import { useMovieStore } from "@/stores/movies";
-import { getFromCache, saveToCache } from "@/utils/movieCache";
+import { getFromCache, getMovieById, saveToCache } from "@/utils/movieCache";
 
 export async function getPopularMovies(page: number  = 1): Promise<Movie[]> {
   const res: AxiosResponse<MoviesResponse> = await api.get("/movie/popular", {
@@ -49,12 +49,14 @@ export async function getAllGenres(): Promise<void> {
 }
 
 export async function getMovieDetails(id: number): Promise<Movie> {
-  const res: AxiosResponse<Movie> = await api.get(
-    `/movie/${id}`,
-    {
-      params: { language: "pt-BR" },
-    }
-  );
+  const cachedMovie = getMovieById(id);
+  if (cachedMovie) {
+    return cachedMovie;
+  }
+
+  const res: AxiosResponse<Movie> = await api.get(`/movie/${id}`, {
+    params: { language: "pt-BR" },
+  });
   return res.data;
 }
 
