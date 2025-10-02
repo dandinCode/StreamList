@@ -62,11 +62,4 @@ a {
 .v-theme--dark a {
   color: #ffffff;
 }
-.sidebar-fixed {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;
-}
-
 </style>
