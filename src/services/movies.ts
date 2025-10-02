@@ -9,7 +9,7 @@ import type {
 import { useMovieStore } from "@/stores/movies";
 import { getFromCache, getMovieById, saveToCache } from "@/utils/movieCache";
 
-export async function getPopularMovies(page: number  = 1): Promise<Movie[]> {
+export async function getPopularMovies(page: number = 1): Promise<Movie[]> {
   const res: AxiosResponse<MoviesResponse> = await api.get("/movie/popular", {
     params: { page },
   });
@@ -31,7 +31,7 @@ export async function getAllMovies(
   const res: AxiosResponse<MoviesResponse> = await api.get("/discover/movie", {
     params: { page, ...filters },
   });
-  
+
   movieStore.changeTotalPages(res.data.total_pages);
   saveToCache(page, filters, res.data.results, res.data.total_pages);
   return res.data.results;
@@ -60,11 +60,22 @@ export async function getMovieDetails(id: number): Promise<Movie> {
   return res.data;
 }
 
-export async function searchMovies(page: number = 1, query: string): Promise<Movie[]> {
+export async function searchMovies(
+  page: number = 1,
+  query: string
+): Promise<Movie[]> {
   const movieStore = useMovieStore();
+  const filter = { title: query };
+  const cached = getFromCache(page, filter);
+  if (cached) {
+    movieStore.changeTotalPages(cached.totalPages);
+    return cached.movies;
+  }
+  
   const res: AxiosResponse<MoviesResponse> = await api.get("/search/movie", {
     params: { query, page, language: "pt-BR" },
   });
   movieStore.changeTotalPages(res.data.total_pages);
+  saveToCache(page, filter, res.data.results, res.data.total_pages);
   return res.data.results;
 }
