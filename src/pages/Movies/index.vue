@@ -64,12 +64,14 @@ export default defineComponent({
     },
     cleanSearchField() {
       this.searchMovieField = "";
+      this.currentPage = 1;
     },
   },
   created() {
     const debouncedSearch = debounce(async (query: string) => {
       if (query.length >= 3) {
         await this.movieStore.searchMovies(1, query);
+        this.currentPage = 1;
       } else {
         await this.loadPage(1);
       }
