@@ -26,7 +26,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="fw-bolder  pb-9">
+  <div class="fw-bolder pb-9">
     <p v-if="isFavorite()">Remover dos favoritos</p>
     <p v-else>Adicionar aos favoritos</p>
     <v-icon

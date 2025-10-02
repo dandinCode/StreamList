@@ -25,11 +25,11 @@ export const useFavoriteStore = defineStore("favorite", {
       localStorage.setItem("favorites", JSON.stringify(this.favorites));
     },
     toggleFavorite(movie: Movie) {
-      if (this.isFavorite(movie.id)) {
-        this.removeFavorite(movie.id);
-      } else {
+      if (!this.isFavorite(movie.id)) {
         this.addFavorite(movie);
+        return;
       }
+      this.removeFavorite(movie.id);
     },
     isFavorite(movieId: number): boolean {
       return this.favorites.some((fav) => fav.id === movieId);

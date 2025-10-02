@@ -29,6 +29,16 @@ export default defineComponent({
       });
     },
   },
+  computed: {
+    selectedOriginComputed: {
+      get() {
+        return this.selectedOrigin;
+      },
+      set(value: string) {
+        this.selectedOrigin = this.selectedOrigin === value ? null : value;
+      },
+    },
+  },
 });
 </script>
 
@@ -68,11 +78,8 @@ export default defineComponent({
                   <v-list-item
                     v-for="origin in originStore.origins"
                     :key="origin.iso_3166_1"
-                    @click="
-                      selectedOrigin === origin.iso_3166_1
-                        ? (selectedOrigin = null)
-                        : (selectedOrigin = origin.iso_3166_1)
-                    "
+                    link
+                    @click="selectedOriginComputed = origin.iso_3166_1"
                   >
                     <v-list-item-title>
                       {{ origin.native_name }} -

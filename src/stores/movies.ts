@@ -1,4 +1,4 @@
-import { getAllMovies, searchMovies } from "@/services/movies";
+import { getAllGenres, getAllMovies, searchMovies } from "@/services/movies";
 import type { Genre, Movie, MoviesFilters } from "@/types/types";
 import { defineStore } from "pinia";
 
@@ -13,7 +13,8 @@ export const useMovieStore = defineStore("movie", {
     changeTotalPages(total_pages: number) {
       this.total_pages = total_pages;
     },
-    saveGenres(genres: Genre[]) {
+    async saveGenres() {
+      const genres = await getAllGenres();
       const sorted = [...genres].sort((a, b) => a.name.localeCompare(b.name));
 
       this.genres = sorted;
@@ -34,7 +35,7 @@ export const useMovieStore = defineStore("movie", {
     async searchMovies(page: number, query: string) {
       this.films = await searchMovies(page, query);
     },
-    sortMovies(sortBy: string, sortDirection: string){
+    sortMovies(sortBy: string, sortDirection: string) {
       const movies = this.films;
       return movies.sort((a, b) => {
         let comparison = 0;
@@ -47,12 +48,12 @@ export const useMovieStore = defineStore("movie", {
           const dateA = new Date(a.release_date ?? 0).getTime();
           const dateB = new Date(b.release_date ?? 0).getTime();
           comparison = dateA - dateB;
-         } else if (sortBy === "vote_average") {
+        } else if (sortBy === "vote_average") {
           comparison = Number(a.vote_average) - Number(b.vote_average);
         }
 
         return sortDirection === "asc" ? comparison : -comparison;
       });
-    }
+    },
   },
 });
