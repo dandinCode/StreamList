@@ -1,5 +1,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
+import noImage from "@/assets/noImage.jpg";
 
 export default defineComponent({
   props: {
@@ -12,54 +13,50 @@ export default defineComponent({
       required: true,
     },
     urlPoster: {
-      type: String,
-      required: true,
+      type: String as () => string | null,
     },
+  },
+  setup() {
+    return { noImage };
   },
 });
 </script>
 
 <template>
-  <div class="col-12 col-sm-6 col-md-4 col-lg-4">
-    <div class="card p2 mb-3 cardList">
-      <router-link :to="`/Details/${id}`">
-        <p class="text-center">{{ name }}</p>
-        <img :src="urlPoster" class="card-img-top" alt="" />
-      </router-link>
-    </div>
+  <div class="col-12 col-sm-6 col-md-4 col-lg-4 my-2">
+    <router-link :to="`/Details/${id}`" class="text-decoration-none">
+      <div
+        class="card h-100 shadow-sm movie-card border-0"
+        :class="[
+          !$vuetify.theme.current.dark
+            ? 'bg-dark text-light'
+            : 'bg-light text-dark',
+        ]"
+      >
+        <img
+          :src="
+            urlPoster ? 'https://image.tmdb.org/t/p/w342' + urlPoster : noImage
+          "
+          class="card-img-top img-fluid"
+          alt="Poster"
+        />
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title text-center fw-bold">{{ name }}</h6>
+        </div>
+      </div>
+    </router-link>
   </div>
 </template>
 
 <style scoped>
-.cardList {
-  background: rgb(72, 63, 251);
-  background: radial-gradient(
-    circle,
-    rgba(94, 87, 232, 0.6) 0%,
-    rgba(70, 252, 244, 0.2) 100%
-  );
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-}
-.cardList:hover {
-  background: rgb(72, 63, 251);
-  background: radial-gradient(
-    circle,
-    rgba(72, 63, 251, 0.6) 0%,
-    rgba(70, 252, 244, 0.4) 100%
-  );
-}
-.cardList img:hover {
-  padding: 0.1rem;
-}
-.cardList img {
+.movie-card img {
   height: 500px;
   object-fit: cover;
+  border-radius: 0.3rem 0.3rem 0 0;
+  transition: transform 0.3s ease-in-out;
 }
-.cardList p {
-  min-height: 3rem; 
+
+.movie-card:hover img {
+  transform: scale(0.98);
 }
 </style>

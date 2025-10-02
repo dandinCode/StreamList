@@ -25,17 +25,37 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="p-2">
-    <h2>Home</h2>
-    <div class="card mb-3">
-      <div class="card-body row">
-        <CardMidia
-          v-for="film in films"
-          :key="film.id"
-          :name="film.title"
-          :urlPoster="'https://image.tmdb.org/t/p/w342' + film.poster_path"
-          :id="film.id"
-        />
+  <div class="p-3">
+    <div class="d-flex align-items-center justify-content-between mb-4">
+      <h2 class="fw-bold py-1">
+        <v-icon icon="mdi-home" class="me-2 text-primary"></v-icon>
+        Início
+      </h2>
+      <small v-if="films.length > 0">
+        Exibindo {{ films.length }} filmes
+      </small>
+    </div>
+
+    <div
+      class="card border-0 shadow-sm"
+      :class="[
+        $vuetify.theme.current.dark
+          ? 'bg-dark text-light'
+          : 'bg-light text-dark',
+      ]"
+    >
+      <div class="card-body">
+        <div class="row g-4">
+          <CardMidia
+            v-if="films.length > 1"
+            v-for="film in films"
+            :key="film.id"
+            :name="film.title"
+            :urlPoster="film.poster_path"
+            :id="film.id"
+          />
+          <h3 v-else class="text-center py-4">Nenhum filme encontrado!</h3>
+        </div>
       </div>
     </div>
   </div>

@@ -85,35 +85,56 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="p-2">
-    <h2>Movies</h2>
-    <div class="mb-3">
-      <label hidden for="searchMovieField" class="form-label">
-        Pesquisar...
-      </label>
+  <div class="p-3">
+    <div class="d-flex flex-column flex-md-row justify-content-between mb-4">
+      <h2 class="fw-bold mb-3 mb-md-0">🎬 Filmes</h2>
 
-      <input
-        v-model="searchMovieField"
-        type="text"
-        class="form-control"
-        id="searchMovieField"
-        placeholder="Pesquisar..."
-      />
+      <div class="input-group w-100 w-md-50 shadow-sm rounded p-2">
+        <span class="input-group-text bg-primary text-white d-flex align-items-center">
+          <v-icon icon="mdi-magnify" size="20"></v-icon>
+        </span>
+
+        <input
+          v-model="searchMovieField"
+          type="text"
+          class="form-control border-0"
+          id="searchMovieField"
+          placeholder="Pesquisar filmes..."
+        />
+
+        <button 
+          v-if="searchMovieField" 
+          class="btn btn-outline-secondary d-flex align-items-center"
+          @click="cleanSearchField"
+        >
+          <v-icon icon="mdi-close-circle" size="20"></v-icon>
+        </button>
+      </div>
     </div>
 
-    <DropdownFilters @cleanSearchField="cleanSearchField" />
-    <SortingButtons />
-    <div class="card mb-3">
-      <div class="card-body row">
+    <div class="d-flex flex-column flex-md-row gap-2 mb-4">
+      <DropdownFilters @cleanSearchField="cleanSearchField" />
+      <SortingButtons />
+    </div>
+
+    <div
+      class="card border-0 shadow-sm"
+      :class="[
+        $vuetify.theme.current.dark
+          ? 'bg-dark text-light'
+          : 'bg-light text-dark',
+      ]"
+    >
+      <div class="card-body row g-3">
         <CardMidia
           v-if="movieStore.films.length > 1"
           v-for="film in movieStore.films"
           :key="film.id"
           :name="film.title"
-          :urlPoster="'https://image.tmdb.org/t/p/w342' + film.poster_path"
+          :urlPoster="film.poster_path"
           :id="film.id"
         />
-        <h3 v-else>Nenhum filme encontrado!</h3>
+        <h3 v-else class="text-center py-4">Nenhum filme encontrado!</h3>
       </div>
       <Pagination
         :currentPage="currentPage"
@@ -123,3 +144,4 @@ export default defineComponent({
     </div>
   </div>
 </template>
+

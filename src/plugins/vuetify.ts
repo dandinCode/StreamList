@@ -12,8 +12,31 @@ import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
-export default createVuetify({
+const vuetify = createVuetify({
   theme: {
-    defaultTheme: 'system',
+    defaultTheme: 'light',
+    themes: {
+      light: {
+        dark: false,
+        colors: {
+          background: '#ffffff',
+          surface: '#ffffff',
+          primary: '#5e57e8',
+          secondary: '#03dac6',
+          onSurface: '#222222',
+        },
+      },
+      dark: {
+        dark: true,
+        colors: {
+          background: '#121212',
+          surface: '#1e1e1e',
+          primary: '#5e57e8',
+          secondary: '#03dac6',
+          onSurface: '#ffffff',
+        },
+      },
+    },
   },
 })
+export default vuetify
