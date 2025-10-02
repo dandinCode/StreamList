@@ -9,14 +9,7 @@ import { useMovieStore } from "@/stores/movies";
 import { useOriginStore } from "@/stores/origin";
 import type { Movie } from "@/types/types";
 import { getAllOrigins } from "@/services/origin";
-
-function debounce<T extends (...args: any[]) => void>(fn: T, delay: number) {
-  let timer: ReturnType<typeof setTimeout>;
-  return (...args: Parameters<T>) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => fn(...args), delay);
-  };
-}
+import { debounce } from "@/utils/debounce.ts";
 
 export default defineComponent({
   components: {
@@ -30,9 +23,12 @@ export default defineComponent({
       currentPage: 1,
       movieStore: useMovieStore(),
       searchMovieField: "",
+      debouncedSearch: null as ((query: string) => void) | null,
     };
   },
   async mounted() {
+    this.debouncedSearch = this.getDebouncedSearch();
+
     const genres = sessionStorage.getItem("genres");
     if (!genres) {
       await getAllGenres();
@@ -58,30 +54,31 @@ export default defineComponent({
       this.currentPage = page;
       if (this.searchMovieField.length >= 3) {
         await this.movieStore.searchMovies(page, this.searchMovieField);
-        return
-      }
+      } else {
         await this.loadPage(page);
+      }
     },
     cleanSearchField() {
       this.searchMovieField = "";
       this.currentPage = 1;
     },
-  },
-  created() {
-    const debouncedSearch = debounce(async (query: string) => {
-      if (query.length >= 3) {
-        await this.movieStore.searchMovies(1, query);
-        this.currentPage = 1;
-      } else {
+    getDebouncedSearch() {
+      return debounce(async (query: string) => {
+        if (query.length >= 3) {
+          await this.movieStore.searchMovies(1, query);
+          this.currentPage = 1;
+          return
+        }
         await this.loadPage(1);
+      }, 400);
+    },
+  },
+  watch: {
+    searchMovieField(newValue: string) {
+      if (this.debouncedSearch) {
+        this.debouncedSearch(newValue);
       }
-    }, 400);
-    watch(
-      () => this.searchMovieField,
-      (newValue) => {
-        debouncedSearch(newValue);
-      }
-    );
+    },
   },
 });
 </script>
@@ -92,7 +89,9 @@ export default defineComponent({
       <h2 class="fw-bold mb-3 mb-md-0">🎬 Filmes</h2>
 
       <div class="input-group w-100 w-md-50 shadow-sm rounded p-2">
-        <span class="input-group-text bg-primary text-white d-flex align-items-center">
+        <span
+          class="input-group-text bg-primary text-white d-flex align-items-center"
+        >
           <v-icon icon="mdi-magnify" size="20"></v-icon>
         </span>
 
@@ -104,8 +103,8 @@ export default defineComponent({
           placeholder="Pesquisar filmes..."
         />
 
-        <button 
-          v-if="searchMovieField" 
+        <button
+          v-if="searchMovieField"
           class="btn btn-outline-secondary d-flex align-items-center"
           @click="cleanSearchField"
         >
@@ -146,4 +145,3 @@ export default defineComponent({
     </div>
   </div>
 </template>
-
