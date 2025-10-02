@@ -3,14 +3,19 @@ import { defineComponent, ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { getMovieDetails } from "@/services/movies";
 import Favorite from "@/components/Favorite.vue";
+import StarRating from "@/components/StarRating.vue";
 import type { Movie } from "@/types/types";
+import noImage from "@/assets/noImage.jpg";
 
 export default defineComponent({
+  components: {
+    Favorite,
+    StarRating,
+  },
   data() {
     return {
       movieId: Number((useRoute().params as { id: string }).id),
       movie: ref<Movie>(),
-      errorGetDetails: false,
     };
   },
   methods: {
@@ -24,14 +29,15 @@ export default defineComponent({
       });
     },
   },
-
   async mounted() {
     try {
       this.movie = await getMovieDetails(this.movieId);
     } catch (error) {
       console.error(error);
-      this.errorGetDetails = true;
     }
+  },
+  setup() {
+    return { noImage };
   },
 });
 </script>
@@ -41,7 +47,11 @@ export default defineComponent({
     <div v-if="movie" class="row">
       <div class="col-md-4">
         <img
-          :src="'https://image.tmdb.org/t/p/w500' + movie.poster_path"
+          :src="
+            movie.poster_path
+              ? 'https://image.tmdb.org/t/p/w500' + movie.poster_path
+              : noImage
+          "
           alt="Poster"
           class="img-fluid rounded shadow"
         />
@@ -49,39 +59,60 @@ export default defineComponent({
 
       <div class="col-md-8">
         <h2>{{ movie.title }}</h2>
-        <p class="text-muted" v-if="movie.release_date">
+        <p v-if="movie.release_date">
           Lançamento: {{ formatDate(movie.release_date) }}
         </p>
 
         <p v-if="movie.vote_average">
-          Avaliação: ⭐ {{ Number(movie.vote_average).toFixed(1) }} ({{
-            movie.vote_count
-          }}
-          votos)
+          Avaliação:
+          <StarRating
+            :rating="Number(movie.vote_average)"
+            :voteCount="Number(movie.vote_count)"
+          />
         </p>
 
         <div class="mb-3">
           <span
             v-for="genre in movie.genres"
             :key="genre.id"
-            class="badge bg-primary me-2"
+            class="badge rounded-pill"
+            :class="
+              $vuetify.theme.current.dark
+                ? 'bg-secondary me-2'
+                : 'bg-primary me-2'
+            "
           >
             {{ genre.name }}
           </span>
         </div>
 
-        <p>{{ movie.overview || "Resumo não disponível." }}</p>
+        <div class="mb-4">
+          <h5>Sinopse</h5>
+          <p class="text-justify">
+            {{ movie.overview || "Resumo não disponível." }}
+          </p>
+        </div>
 
         <Favorite :movie="movie" />
       </div>
     </div>
-    <div v-if="errorGetDetails">
-      <h2>Não foi possível encontrar os detalhes do filme!</h2>
-    </div>
-
     <div v-else class="text-center mt-5">
       <v-progress-circular indeterminate color="primary"></v-progress-circular>
       <p>Carregando detalhes...</p>
     </div>
   </div>
 </template>
+
+<style scoped>
+.badge {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.badge:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+.text-justify {
+  text-align: justify;
+  line-height: 1.6;
+}
+</style>

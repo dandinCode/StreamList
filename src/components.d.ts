@@ -15,6 +15,9 @@ declare module 'vue' {
     Pagination: typeof import('./components/Pagination.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Sidebar: typeof import('./components/Sidebar.vue')['default']
     SortingButtons: typeof import('./components/SortingButtons.vue')['default']
+    StarRating: typeof import('./components/StarRating.vue')['default']
+    ThemeButton: typeof import('./components/ThemeButton.vue')['default']
   }
 }

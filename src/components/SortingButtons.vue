@@ -18,31 +18,55 @@ export default defineComponent({
         this.sortBy = criteria;
         this.sortDirection = "asc";
       }
-      useMovieStore().sortMovies(this.sortBy, this.sortDirection)
+      useMovieStore().sortMovies(this.sortBy, this.sortDirection);
     },
   },
 });
 </script>
 
 <template>
-  <div class="d-flex gap-2 mb-3 p-2">
-    <button class="btn btn-outline-primary" @click="toggleSort('title')">
+  <div class="d-flex flex-wrap gap-2 mb-3 p-2 align-items-center">
+    <button
+      class="btn d-flex align-items-center"
+      :class="[
+        $vuetify.theme.current.dark
+          ? 'btn-outline-warning'
+          : 'btn-warning',
+      ]"
+      @click="toggleSort('title')"
+    >
       Ordem alfabética
-      <span v-if="sortBy === 'title'">
+      <span v-if="sortBy === 'title'" class="ms-1">
         ({{ sortDirection === "asc" ? "A-Z" : "Z-A" }})
       </span>
     </button>
 
-    <button class="btn btn-outline-primary" @click="toggleSort('release_date')">
+    <button
+      class="btn d-flex align-items-center"
+      :class="[
+        $vuetify.theme.current.dark
+          ? 'btn-outline-warning'
+          : 'btn-warning',
+      ]"
+      @click="toggleSort('release_date')"
+    >
       Ano de lançamento
-      <span v-if="sortBy === 'release_date'">
+      <span v-if="sortBy === 'release_date'" class="ms-1">
         ({{ sortDirection === "asc" ? "Mais antigo" : "Mais recente" }})
       </span>
     </button>
 
-    <button class="btn btn-outline-primary" @click="toggleSort('vote_average')">
+    <button
+      class="btn d-flex align-items-center"
+      :class="[
+        $vuetify.theme.current.dark
+          ? 'btn-outline-warning'
+          : 'btn-warning',
+      ]"
+      @click="toggleSort('vote_average')"
+    >
       Avaliação do público
-      <span v-if="sortBy === 'vote_average'">
+      <span v-if="sortBy === 'vote_average'" class="ms-1">
         ({{ sortDirection === "asc" ? "Menor nota" : "Maior nota" }})
       </span>
     </button>
