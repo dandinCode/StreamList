@@ -4,7 +4,7 @@ import { defineStore } from "pinia";
 
 export const useMovieStore = defineStore("movie", {
   state: () => ({
-    films: [] as Movie[],
+    movies: [] as Movie[],
     genres: [] as Genre[],
     genresSelected: "",
     total_pages: 1,
@@ -29,14 +29,14 @@ export const useMovieStore = defineStore("movie", {
     setGenresSelected(selectedIds: string[]) {
       this.genresSelected = selectedIds.join(",");
     },
-    async setFilms(page: number, filters?: MoviesFilters) {
-      this.films = await getAllMovies(page, filters);
+    async setMovies(page: number, filters?: MoviesFilters) {
+      this.movies = await getAllMovies(page, filters);
     },
     async searchMovies(page: number, query: string) {
-      this.films = await searchMovies(page, query);
+      this.movies = await searchMovies(page, query);
     },
     sortMovies(sortBy: string, sortDirection: string) {
-      const movies = this.films;
+      const movies = this.movies;
       return movies.sort((a, b) => {
         let comparison = 0;
 
