@@ -40,3 +40,8 @@ export interface CachedPage {
   movies: Movie[];
   totalPages: number;
 }
+
+export interface CacheData {
+  cache: Record<string, CachedPage>;
+  order: string[];
+}
