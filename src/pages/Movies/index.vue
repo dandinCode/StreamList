@@ -33,7 +33,7 @@ export default defineComponent({
   methods: {
     async loadPage(page: number) {
       try {
-        await useMovieStore().setFilms(page, {
+        await useMovieStore().setMovies(page, {
           with_genres: useMovieStore().genresSelected,
           with_origin_country: useOriginStore().originSelected,
         });
@@ -119,8 +119,8 @@ export default defineComponent({
     >
       <div class="card-body row g-3">
         <CardMidia
-          v-if="movieStore.films.length > 1"
-          v-for="film in movieStore.films"
+          v-if="movieStore.movies.length > 1"
+          v-for="film in movieStore.movies"
           :key="film.id"
           :name="film.title"
           :urlPoster="film.poster_path"
