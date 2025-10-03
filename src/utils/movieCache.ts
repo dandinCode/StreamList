@@ -1,9 +1,6 @@
-import type { CachedPage, Movie, MoviesFilters } from "@/types/types";
+import type { CacheData, CachedPage, Movie, MoviesFilters } from "@/types/types";
 
-interface CacheData {
-  cache: Record<string, CachedPage>;
-  order: string[];
-}
+
 
 const CACHE_KEY = "movieCache";
 const MAX_PAGES = 5;
