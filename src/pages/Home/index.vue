@@ -10,15 +10,15 @@ export default defineComponent({
   },
   data() {
     return {
-      films: [] as Movie[],
+      movies: [] as Movie[],
     };
   },
   async mounted() {
     try {
-      this.films = await getPopularMovies();
+      this.movies = await getPopularMovies();
     } catch (err) {
       console.error("Erro ao carregar filmes:", err);
-      this.films = [];
+      this.movies = [];
     }
   },
 });
@@ -31,8 +31,8 @@ export default defineComponent({
         <v-icon icon="mdi-home" class="me-2 text-primary"></v-icon>
         Início
       </h2>
-      <small v-if="films.length > 0">
-        Exibindo {{ films.length }} filmes
+      <small v-if="movies.length > 0">
+        Exibindo {{ movies.length }} filmes
       </small>
     </div>
 
@@ -47,8 +47,8 @@ export default defineComponent({
       <div class="card-body">
         <div class="row g-4">
           <CardMidia
-            v-if="films.length > 1"
-            v-for="film in films"
+            v-if="movies.length > 1"
+            v-for="film in movies"
             :key="film.id"
             :name="film.title"
             :urlPoster="film.poster_path"
